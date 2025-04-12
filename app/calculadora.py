@@ -2,8 +2,9 @@
 """
 Calculator module that provides basic mathematical operations.
 
-This module implements the core mathematical operations used by the calculator web application.
-All functions accept two numeric parameters and return the result of the operation.
+This module implements the core mathematical operations used by the calculator
+web application. All functions accept two numeric parameters and return the
+result of the operation.
 
 Functions:
     sumar(a, b): Returns the sum of two numbers
@@ -11,6 +12,7 @@ Functions:
     multiplicar(a, b): Returns the product of two numbers
     dividir(a, b): Returns the quotient of two numbers
 """
+
 
 def sumar(a, b):
     """
