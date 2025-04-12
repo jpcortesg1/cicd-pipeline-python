@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculadora</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e8f5e9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #2e7d32;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 2px solid #81c784;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #2e7d32;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2e7d32;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #c8e6c9;
+            border-radius: 8px;
+            text-align: center;
+            color: #1b5e20;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧮 Calculadora</h1>
+    <form method="post">
+        <input type="text" name="num1" placeholder="Número 1" required>
+        <input type="text" name="num2" placeholder="Número 2" required>
+        <select name="operacion">
+            <option value="sumar">Sumar ➕</option>
+            <option value="restar">Restar ➖</option>
+            <option value="multiplicar">Multiplicar ✖️</option>
+            <option value="dividir">Dividir ➗</option>
+        </select>
+        <button type="submit">Calcular</button>
+    </form>
+    {% if resultado is not none %}
+        <div class="resultado">
+            <h2>Resultado: {{ resultado }}</h2>
+        </div>
+    {% endif %}
+</body>
+</html>
