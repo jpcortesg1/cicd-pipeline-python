@@ -45,7 +45,7 @@ def index():
             elif operacion == "dividir":
                 resultado = dividir(num1, num2)
             else:
-                resultado = "Invalid operation"
+                resultado = "Operación no válida"
         except ValueError:
             resultado = "Error: Introduce números válidos"
         except ZeroDivisionError:
