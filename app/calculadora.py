@@ -71,5 +71,5 @@ def dividir(a, b):
         ZeroDivisionError: If b is zero
     """
     if b == 0:
-        raise ZeroDivisionError("Cannot divide by zero")
+        raise ZeroDivisionError("No se puede dividir por cero")
     return a / b

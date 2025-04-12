@@ -47,9 +47,9 @@ def index():
             else:
                 resultado = "Invalid operation"
         except ValueError:
-            resultado = "Error: Please enter valid numbers"
+            resultado = "Error: Introduce números válidos"
         except ZeroDivisionError:
-            resultado = "Error: Cannot divide by zero"
+            resultado = "Error: No se puede dividir por cero"
 
     return render_template("index.html", resultado=resultado)
 
