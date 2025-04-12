@@ -68,6 +68,7 @@ def index():
 
 if __name__ == "__main__":  # pragma: no cover
     # Remove debug=True for production
-    app_port = int(os.environ.get("PORT", 5000))
-    app_debug = os.environ.get("DEBUG", "True") == "True"
+    app_port = int(os.environ.get("PORT", 5001))
+    app_debug = os.environ.get("DEBUG", "False") == "True"
+    print(f"Running on port {app_port} with debug={app_debug}")
     app.run(debug=app_debug, port=app_port, host="0.0.0.0")

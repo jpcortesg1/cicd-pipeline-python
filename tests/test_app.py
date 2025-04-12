@@ -48,3 +48,8 @@ def test_index_post_invalid_numbers(client):
     assert response.status_code == 200
     assert b'Error: Introduce n\xc3\xbameros v\xc3\xa1lidos' in response.data
     
+def test_health_check(client):
+    response = client.get('/health')
+    assert response.status_code == 200
+    assert response.data == b'OK'
+    
