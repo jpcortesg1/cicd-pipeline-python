@@ -12,8 +12,18 @@ Functions:
 # app/app.py
 from flask import Flask, render_template, request
 from .calculadora import sumar, restar, multiplicar, dividir
-
+import os
 app = Flask(__name__)
+
+@app.route("/health")
+def health():
+    """
+    Health check endpoint to ensure the application is running.
+
+    Returns:
+        str: "OK" if the application is running.
+    """
+    return "OK", 200
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -56,4 +66,6 @@ def index():
 
 if __name__ == "__main__":  # pragma: no cover
     # Remove debug=True for production
-    app.run(debug=True, port=5001, host="0.0.0.0")
+    app_port = int(os.environ.get("PORT", 5000))
+    app_debug = os.environ.get("DEBUG", "True") == "True"
+    app.run(debug=app_debug, port=app_port, host="0.0.0.0")
