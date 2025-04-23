@@ -2,8 +2,9 @@
 Main Flask application module that implements a web calculator.
 
 This module provides a simple web interface for performing basic mathematical
-operations such as addition, subtraction, multiplication, and division. It
-handles common errors like division by zero and invalid inputs.
+operations such as addition, subtraction, multiplication, division, and advanced
+operations like power, square root, absolute value, factorial, and natural logarithm.
+It handles common errors like division by zero and invalid inputs.
 
 Functions:
     index(): Handles GET and POST requests for the main page.
@@ -11,7 +12,11 @@ Functions:
 
 # app/app.py
 from flask import Flask, render_template, request
-from .calculadora import sumar, restar, multiplicar, dividir
+from .calculadora import (
+    sumar, restar, multiplicar, dividir,
+    potencia, raiz_cuadrada, valor_absoluto,
+    factorial, logaritmo_natural
+)
 import os
 
 app = Flask(__name__)
@@ -56,10 +61,32 @@ def index():
                 resultado = multiplicar(num1, num2)
             elif operacion == "dividir":
                 resultado = dividir(num1, num2)
+            elif operacion == "potencia":
+                resultado = potencia(num1, num2)
+            elif operacion == "raiz_cuadrada":
+                resultado = raiz_cuadrada(num1)
+            elif operacion == "valor_absoluto":
+                resultado = valor_absoluto(num1)
+            elif operacion == "factorial":
+                try:
+                    resultado = factorial(num1)
+                except TypeError:
+                    resultado = "Error: El factorial solo acepta números enteros"
+                except ValueError:
+                    resultado = "Error: El factorial no acepta números negativos"
+            elif operacion == "logaritmo_natural":
+                resultado = logaritmo_natural(num1)
             else:
                 resultado = "Operación no válida"
-        except ValueError:
-            resultado = "Error: Introduce números válidos"
+        except ValueError as e:
+            if "factorial" in str(e):
+                resultado = "Error: El factorial no acepta números negativos"
+            elif "logaritmo natural" in str(e):
+                resultado = "Error: El logaritmo natural solo acepta números positivos"
+            elif "raíz cuadrada" in str(e):
+                resultado = "Error: No se puede calcular la raíz cuadrada de un número negativo"
+            else:
+                resultado = "Error: Introduce números válidos"
         except ZeroDivisionError:
             resultado = "Error: No se puede dividir por cero"
 

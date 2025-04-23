@@ -35,13 +35,17 @@ def browser():
 # Función de ayuda para esperar y obtener el resultado
 def get_resultado(browser):
     try:
-        # Espera HASTA QUE el <h2> sea visible (máximo 10 segundos)
-        resultado = WebDriverWait(browser, 10).until(
-            EC.visibility_of_element_located((By.TAG_NAME, "h2"))
+        # Espera hasta que el div de resultado sea visible
+        resultado_div = WebDriverWait(browser, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "resultado"))
         )
-        return resultado.text
+        # Una vez que el div es visible, busca el h2 dentro de él
+        h2_element = resultado_div.find_element(By.TAG_NAME, "h2")
+        return h2_element.text
     except TimeoutException:
         return "Error: Tiempo de espera agotado esperando el resultado."
+    except Exception as e:
+        return f"Error inesperado: {str(e)}"
 
 #Funcion auxiliar para encontrar elementos:
 def find_elements(browser):
@@ -54,12 +58,22 @@ def find_elements(browser):
 @pytest.mark.parametrize(
     "num1, num2, operacion, resultado_esperado",
     [
-        ("2", "3", "sumar", "Resultado: 5"),
-        ("5", "2", "restar", "Resultado: 3"),
-        ("4", "6", "multiplicar", "Resultado: 24"),
-        ("10", "2", "dividir", "Resultado: 5"), 
+        ("2", "3", "sumar", "Resultado: 5.0"),
+        ("5", "2", "restar", "Resultado: 3.0"),
+        ("4", "6", "multiplicar", "Resultado: 24.0"),
+        ("10", "2", "dividir", "Resultado: 5.0"),
         ("5", "0", "dividir", "Error: No se puede dividir por cero"),
-        ("abc", "def", "sumar", "Error: Introduce números válidos"), 
+        ("abc", "def", "sumar", "Error: Introduce números válidos"),
+        # Nuevos casos de prueba
+        ("2", "3", "potencia", "Resultado: 8.0"),
+        ("4", "0", "raiz_cuadrada", "Resultado: 2.0"),
+        ("-4", "0", "raiz_cuadrada", "Error: No se puede calcular la raíz cuadrada de un número negativo"),
+        ("-5", "0", "valor_absoluto", "Resultado: 5.0"),
+        ("5", "0", "factorial", "Resultado: 120"),
+        ("5.5", "0", "factorial", "Error: El factorial solo acepta números enteros"),
+        ("-5", "0", "factorial", "Error: El factorial no acepta números negativos"),
+        ("2.718281828459045", "0", "logaritmo_natural", "Resultado: 1.0"),
+        ("0", "0", "logaritmo_natural", "Error: El logaritmo natural solo acepta números positivos"),
     ],
 )
 def test_calculadora(browser, num1, num2, operacion, resultado_esperado):
