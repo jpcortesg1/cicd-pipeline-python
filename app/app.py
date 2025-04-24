@@ -14,9 +14,15 @@ Functions:
 # app/app.py
 from flask import Flask, render_template, request
 from .calculadora import (
-    sumar, restar, multiplicar, dividir,
-    potencia, raiz_cuadrada, valor_absoluto,
-    factorial, logaritmo_natural
+    sumar,
+    restar,
+    multiplicar,
+    dividir,
+    potencia,
+    raiz_cuadrada,
+    valor_absoluto,
+    factorial,
+    logaritmo_natural,
 )
 import os
 
@@ -72,13 +78,9 @@ def index():
                 try:
                     resultado = factorial(num1)
                 except TypeError:
-                    resultado = (
-                        "Error: El factorial solo acepta números enteros"
-                    )
+                    resultado = "Error: El factorial solo acepta números enteros"  # noqa: E501, E261
                 except ValueError:
-                    resultado = (
-                        "Error: El factorial no acepta números negativos"
-                    )
+                    resultado = "Error: El factorial no acepta números negativos"  # noqa: E501, E261
             elif operacion == "logaritmo_natural":
                 resultado = logaritmo_natural(num1)
             else:
@@ -87,9 +89,7 @@ def index():
             if "factorial" in str(e):
                 resultado = "Error: El factorial no acepta números negativos"
             elif "logaritmo natural" in str(e):
-                resultado = (
-                    "Error: El logaritmo natural solo acepta números positivos"
-                )
+                resultado = "Error: El logaritmo natural solo acepta números positivos"  # noqa: E501, E261
             elif "raíz cuadrada" in str(e):
                 resultado = (
                     "Error: No se puede calcular la raíz cuadrada de un "

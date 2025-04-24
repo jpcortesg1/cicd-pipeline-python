@@ -110,7 +110,7 @@ def raiz_cuadrada(n):
     if n < 0:
         raise ValueError(
             "No se puede calcular la raíz cuadrada de un número negativo"
-        )
+        )  # noqa: E501, E261
     return n**0.5
 
 
@@ -143,21 +143,17 @@ def factorial(n):
     """
     # Verificar si el número es decimal
     if isinstance(n, float) and n != int(n):
-        raise TypeError(
-            "El factorial solo está definido para números enteros"
-        )
+        raise TypeError("El factorial solo está definido para números enteros")
     # Convertir a entero si es un float sin parte decimal
     if isinstance(n, float):
         n = int(n)
 
     if not isinstance(n, int):
-        raise TypeError(
-            "El factorial solo está definido para números enteros"
-        )
+        raise TypeError("El factorial solo está definido para números enteros")
     if n < 0:
         raise ValueError(
             "El factorial no está definido para números negativos"
-        )
+        )  # noqa: E501, E261
     if n == 0:
         return 1
     result = 1
@@ -185,4 +181,5 @@ def logaritmo_natural(n):
             "iguales a cero"
         )
     from math import log
+
     return log(n)
