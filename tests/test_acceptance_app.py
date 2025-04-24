@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-BASE_URL = os.environ.get("APP_BASE_URL", "http://localhost:5001")
+BASE_URL = os.environ.get("APP_BASE_URL", "http://localhost:5000")
 
 # Configuración del driver (elige uno: Chrome o Firefox)
 @pytest.fixture
