@@ -35,25 +35,28 @@ def browser():
 # Función de ayuda para esperar y obtener el resultado
 def get_resultado(browser):
     try:
-        # Espera hasta que el div de resultado sea visible
-        resultado_div = WebDriverWait(browser, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "resultado"))
+        # Espera hasta que el elemento resultado esté presente y sea visible
+        wait = WebDriverWait(browser, 10)
+        resultado = wait.until(
+            EC.visibility_of_element_located((By.CLASS_NAME, "resultado"))
         )
-        # Una vez que el div es visible, busca el h2 dentro de él
-        h2_element = resultado_div.find_element(By.TAG_NAME, "h2")
-        return h2_element.text
+        h2 = resultado.find_element(By.TAG_NAME, "h2")
+        return h2.text.strip()
     except TimeoutException:
-        return "Error: Tiempo de espera agotado esperando el resultado."
+        pytest.fail("Timeout esperando el resultado")
     except Exception as e:
-        return f"Error inesperado: {str(e)}"
+        pytest.fail(f"Error al obtener resultado: {str(e)}")
 
-#Funcion auxiliar para encontrar elementos:
 def find_elements(browser):
-    num1_input = browser.find_element(By.NAME, "num1")
-    num2_input = browser.find_element(By.NAME, "num2")
-    operacion_select = Select(browser.find_element(By.NAME, "operacion"))
-    calcular_button = browser.find_element(By.CSS_SELECTOR, "button[type='submit']")
-    return num1_input, num2_input, operacion_select, calcular_button
+    try:
+        wait = WebDriverWait(browser, 10)
+        num1_input = wait.until(EC.presence_of_element_located((By.NAME, "num1")))
+        num2_input = browser.find_element(By.NAME, "num2")
+        operacion_select = Select(browser.find_element(By.NAME, "operacion"))
+        calcular_button = browser.find_element(By.CSS_SELECTOR, "button[type='submit']")
+        return num1_input, num2_input, operacion_select, calcular_button
+    except Exception as e:
+        pytest.fail(f"Error al encontrar elementos: {str(e)}")
 
 @pytest.mark.parametrize(
     "num1, num2, operacion, resultado_esperado",
@@ -69,7 +72,7 @@ def find_elements(browser):
         ("4", "0", "raiz_cuadrada", "Resultado: 2.0"),
         ("-4", "0", "raiz_cuadrada", "Error: No se puede calcular la raíz cuadrada de un número negativo"),
         ("-5", "0", "valor_absoluto", "Resultado: 5.0"),
-        ("5", "0", "factorial", "Resultado: 120"),
+        ("5", "0", "factorial", "Resultado: 120.0"),
         ("5.5", "0", "factorial", "Error: El factorial solo acepta números enteros"),
         ("-5", "0", "factorial", "Error: El factorial no acepta números negativos"),
         ("2.718281828459045", "0", "logaritmo_natural", "Resultado: 1.0"),
@@ -77,16 +80,18 @@ def find_elements(browser):
     ],
 )
 def test_calculadora(browser, num1, num2, operacion, resultado_esperado):
-    browser.get(BASE_URL)
-
-    # Encuentra los elementos de la página.  Esta vez con la funcion auxiliar.
-    num1_input, num2_input, operacion_select, calcular_button = find_elements(browser)
-
-    #Realiza la operacion:
-    num1_input.send_keys(num1)
-    num2_input.send_keys(num2)
-    operacion_select.select_by_value(operacion)
-    calcular_button.click()
-
-    #Verifica con la funcion auxiliar:
-    assert resultado_esperado in get_resultado(browser)
+    try:
+        browser.get(BASE_URL)
+        num1_input, num2_input, operacion_select, calcular_button = find_elements(browser)
+        
+        num1_input.clear()
+        num1_input.send_keys(num1)
+        num2_input.clear()
+        num2_input.send_keys(num2)
+        operacion_select.select_by_value(operacion)
+        calcular_button.click()
+        
+        resultado_actual = get_resultado(browser)
+        assert resultado_actual == resultado_esperado
+    except Exception as e:
+        pytest.fail(f"Test falló: {str(e)}")
