@@ -2,9 +2,10 @@
 Main Flask application module that implements a web calculator.
 
 This module provides a simple web interface for performing basic mathematical
-operations such as addition, subtraction, multiplication, division, and advanced
-operations like power, square root, absolute value, factorial, and natural logarithm.
-It handles common errors like division by zero and invalid inputs.
+operations such as addition, subtraction, multiplication, division, and
+advanced operations like power, square root, absolute value, factorial,
+and natural logarithm. It handles common errors like division by zero
+and invalid inputs.
 
 Functions:
     index(): Handles GET and POST requests for the main page.
@@ -71,9 +72,13 @@ def index():
                 try:
                     resultado = factorial(num1)
                 except TypeError:
-                    resultado = "Error: El factorial solo acepta números enteros"
+                    resultado = (
+                        "Error: El factorial solo acepta números enteros"
+                    )
                 except ValueError:
-                    resultado = "Error: El factorial no acepta números negativos"
+                    resultado = (
+                        "Error: El factorial no acepta números negativos"
+                    )
             elif operacion == "logaritmo_natural":
                 resultado = logaritmo_natural(num1)
             else:
@@ -82,9 +87,14 @@ def index():
             if "factorial" in str(e):
                 resultado = "Error: El factorial no acepta números negativos"
             elif "logaritmo natural" in str(e):
-                resultado = "Error: El logaritmo natural solo acepta números positivos"
+                resultado = (
+                    "Error: El logaritmo natural solo acepta números positivos"
+                )
             elif "raíz cuadrada" in str(e):
-                resultado = "Error: No se puede calcular la raíz cuadrada de un número negativo"
+                resultado = (
+                    "Error: No se puede calcular la raíz cuadrada de un "
+                    "número negativo"
+                )
             else:
                 resultado = "Error: Introduce números válidos"
         except ZeroDivisionError:
